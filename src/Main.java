@@ -10,6 +10,7 @@ public class Main {
 
     RSA rsa1 = new RSA();
 
+
     rsa1.encrypt("0001111010011110000001011011011001001110011001000111001110011011");
 
 //        DES des = new DES();

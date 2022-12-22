@@ -98,11 +98,6 @@ public class RSA {
         return res;
     }
 
-    private void setBlockLength(){
-        //int length = log2();
-
-
-    }
 
     private int log2(BigInteger number){
       //  if (number.equals(BigInteger.TWO)) return 1;
@@ -118,41 +113,62 @@ public class RSA {
 
     public void encrypt(String message){
         ArrayList<BigInteger[]> key_pairs = generateKeys();
-        //int block_length = log2(key_pairs.get(0)[0]);
-        //ArrayList<String> blocks = split(message, block_length);
+        ArrayList<BigInteger> encrypted_blocks = new ArrayList<>();
+        ArrayList<BigInteger> decrypted_blocks = new ArrayList<>();
+
         BigInteger e = key_pairs.get(0)[0];
         BigInteger n = key_pairs.get(0)[1];
         BigInteger d = key_pairs.get(1)[0];
+        // Длина блока текста
+        int block_length = (log2(n) + 1);
+        // Получаем массив блоков
+        String[] blocks = splitStringIntoBlocks(message, block_length);
+        ArrayList<BigInteger> initBlocks = new ArrayList<>();
+        for (String block : blocks) initBlocks.add(binaryStringToBigInt(block));
+
 
         // Введённая бинарная строка
         System.out.println("Input binary: " + message);
 
-        // Длина блока текста
-        int block_length = (log2(n) + 1);
-        System.out.println("Length of a block: " + block_length);
 
-        String[] blocks = splitStringIntoBlocks(message, block_length);
+        System.out.println();
+        System.out.println("Init blocks:");
+        System.out.println(initBlocks);
 
+        System.out.println();
         for (String block : blocks) {
-            System.out.println("\nNEW BLOCK");
-            // Юинарное представление блока
-            System.out.println("Block binary: " + block);
             // Численное представление блока
             BigInteger p = binaryStringToBigInt(block);
-            System.out.println("Input message: " + p);
-
             // Шифрование численного представления
             BigInteger c = bigIntPow(p, e).mod(n);
-            System.out.println("Encrypted message: " + c);
-
-            // Расшифрование численного предсставления
-            BigInteger m = bigIntPow(c, d).mod(n);
-            System.out.println("Decrypted message: " + m);
+            encrypted_blocks.add(c);
         }
+        System.out.println("Encrypted blocks:");
+        System.out.println(encrypted_blocks);
+
+        System.out.println();
+        for (BigInteger block : encrypted_blocks) {
+            // Расшифрование численного предсставления
+            BigInteger m = bigIntPow(block, d).mod(n);
+            decrypted_blocks.add(m);
+        }
+        System.out.println("Decrypted blocks:");
+        System.out.println(decrypted_blocks);
 
 
+        StringBuilder result = new StringBuilder();
+        for (BigInteger block : decrypted_blocks) {
+            String binary = bigIngegerToBinaryString(block);
+            int delta = block_length - binary.length();
+            result.append("0".repeat(Math.max(0, delta)));
+            result.append(binary);
+        }
+        result.reverse().setLength(64);
+        result.reverse();
 
-
+        System.out.println();
+        System.out.println(message);
+        System.out.println(result);
     }
 
 
