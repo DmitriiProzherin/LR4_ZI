@@ -12,6 +12,11 @@ public class RSA {
     private final static long MINIMUM_PRIME_RANGE = (long) 1e0;
     private final static long MAXIMUM_PRIME_RANGE = (long) 1e2;
 
+    private final ArrayList<BigInteger> encrypted_blocks = new ArrayList<>();
+    private final ArrayList<BigInteger> decrypted_blocks = new ArrayList<>();
+    private final ArrayList<BigInteger> initBlocks = new ArrayList<>();
+    private BigInteger e, n, d;
+    private int block_length;
 
     private long generateRandomPrimeNumber(){
         Random r = new Random();
@@ -107,18 +112,17 @@ public class RSA {
 
     public void encrypt(String message){
         ArrayList<BigInteger[]> key_pairs = generateKeyPairs();
-        ArrayList<BigInteger> encrypted_blocks = new ArrayList<>();
-        ArrayList<BigInteger> decrypted_blocks = new ArrayList<>();
 
-        BigInteger e = key_pairs.get(0)[0];
-        BigInteger n = key_pairs.get(0)[1];
-        BigInteger d = key_pairs.get(1)[0];
+        e = key_pairs.get(0)[0];
+        n = key_pairs.get(0)[1];
+        d = key_pairs.get(1)[0];
+
         // Длина блока текста
-        int block_length = log2(n);
+        block_length = log2(n);
 
         // Получаем массив блоков
         String[] blocks = splitStringIntoBlocks(message, block_length);
-        ArrayList<BigInteger> initBlocks = new ArrayList<>();
+
         for (String block : blocks) initBlocks.add(binaryStringToBigInt(block));
 
 
@@ -132,22 +136,27 @@ public class RSA {
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("src/key_encrypted_with_rsa.txt"));
-            writer.write(encrypted_blocks.toString());
+            encrypted_blocks.forEach(block -> {
+                try {
+                    writer.write(block.toString() + " ");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
             writer.close();
 
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
 
-        System.out.println();
+    public void decrypt(){
+
         for (BigInteger block : encrypted_blocks) {
             // Расшифрование численного предсставления
             BigInteger m = bigIntPow(block, d).mod(n);
             decrypted_blocks.add(m);
         }
-        System.out.println("Decrypted blocks:");
-        System.out.println(decrypted_blocks);
-
 
         StringBuilder result = new StringBuilder();
         for (BigInteger block : decrypted_blocks) {
@@ -158,7 +167,7 @@ public class RSA {
         }
         result.reverse().setLength(64);
         result.reverse();
+        System.out.println(result);
     }
-
 
 }

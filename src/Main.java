@@ -6,7 +6,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
     RSA rsa = new RSA();
-    rsa.encrypt(random64bool("src/key.txt"));
+    String key = random64bool("src/key.txt");
+    rsa.encrypt(key);
+    rsa.decrypt();
 
 //        DES des = new DES();
 //        String inputString, encryptedString, decryptedString, key;
