@@ -30,12 +30,11 @@ public class RSA {
         return true;
     }
 
-    public ArrayList<BigInteger[]> generateKeys(){
+    public ArrayList<BigInteger[]> generateKeyPairs(){
         ArrayList<BigInteger[]> key_pairs = new ArrayList<>();
 
         long p = generateRandomPrimeNumber();
         long q = generateRandomPrimeNumber();
-
 
         BigInteger n = BigInteger.valueOf(p * q);
         BigInteger euler_f_n = BigInteger.valueOf((p - 1) * (q -1));
@@ -47,7 +46,7 @@ public class RSA {
         key_pairs.add(new BigInteger[] {d, n});
 
         try {
-            BufferedWriter open_key_writer = new BufferedWriter(new FileWriter("src/public_key_pair"));
+            BufferedWriter open_key_writer = new BufferedWriter(new FileWriter("src/public_rsa_key_pair.txt"));
             open_key_writer.write(Arrays.toString(key_pairs.get(0)));
             open_key_writer.close();
         } catch (IOException ex) {
@@ -55,17 +54,12 @@ public class RSA {
         }
 
         try {
-            BufferedWriter private_key_writer = new BufferedWriter(new FileWriter("src/private_key_pair"));
+            BufferedWriter private_key_writer = new BufferedWriter(new FileWriter("src/private_rsa_key_pair.txt"));
             private_key_writer.write(Arrays.toString(key_pairs.get(1)));
             private_key_writer.close();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
-
-        System.out.println("Public key pair: " + Arrays.toString(key_pairs.get(0)));
-        System.out.println("Private key pair :" + Arrays.toString(key_pairs.get(1)));
-
 
         return key_pairs;
     }
@@ -112,7 +106,7 @@ public class RSA {
 
 
     public void encrypt(String message){
-        ArrayList<BigInteger[]> key_pairs = generateKeys();
+        ArrayList<BigInteger[]> key_pairs = generateKeyPairs();
         ArrayList<BigInteger> encrypted_blocks = new ArrayList<>();
         ArrayList<BigInteger> decrypted_blocks = new ArrayList<>();
 
@@ -120,7 +114,8 @@ public class RSA {
         BigInteger n = key_pairs.get(0)[1];
         BigInteger d = key_pairs.get(1)[0];
         // Длина блока текста
-        int block_length = (log2(n) + 1);
+        int block_length = log2(n);
+        System.out.println("Block length: " + block_length);
         // Получаем массив блоков
         String[] blocks = splitStringIntoBlocks(message, block_length);
         ArrayList<BigInteger> initBlocks = new ArrayList<>();
@@ -128,7 +123,7 @@ public class RSA {
 
 
         // Введённая бинарная строка
-        System.out.println("Input binary: " + message);
+        System.out.println("Input binary:\n" + message);
 
 
         System.out.println();

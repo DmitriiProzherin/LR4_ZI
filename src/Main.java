@@ -1,9 +1,6 @@
 import java.io.*;
 
-import Utilities.Utility;
 import static Utilities.Utility.*;
-import java.math.BigInteger;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -13,10 +10,10 @@ public class Main {
 
     rsa1.encrypt("0001111010011110000001011011011001001110011001000111001110011011");
 
-//        DES des = new DES();
-//        String inputString, encryptedString, decryptedString, key;
-//        generateRandomKey("src/key.txt");
-//        long time;
+        DES des = new DES();
+        String inputString, encryptedString, decryptedString, key;
+        random64bool("src/key.txt");
+        long time;
 //
 //
 //        BufferedReader readerInput = new BufferedReader(new FileReader("src/input.txt"));

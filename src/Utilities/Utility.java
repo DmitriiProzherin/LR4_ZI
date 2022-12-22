@@ -156,7 +156,7 @@ public class Utility {
         return res.toString();
     }
 
-    public static void generateRandomKey(String fileName){
+    public static void random64bool(String fileName){
         boolean[] b = new boolean[64];
         Random r = new Random();
 
