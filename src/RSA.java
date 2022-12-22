@@ -152,8 +152,10 @@ public class RSA {
 
     public String decrypt(){
 
+
+
         for (BigInteger block : encrypted_blocks) {
-            // Расшифрование численного предсставления
+            // Расшифрование численного представления
             BigInteger m = bigIntPow(block, d).mod(n);
             decrypted_blocks.add(m);
         }

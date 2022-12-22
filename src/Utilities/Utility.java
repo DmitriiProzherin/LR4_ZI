@@ -221,4 +221,11 @@ public class Utility {
 
     }
 
+    public static String readStringFromFile(String fileName) throws IOException {
+        BufferedReader readerKey = new BufferedReader(new FileReader(fileName));
+        String str = readerKey.readLine();
+        readerKey.close();
+        return str;
+    }
+
 }
