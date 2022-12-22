@@ -150,7 +150,7 @@ public class RSA {
         }
     }
 
-    public void decrypt(){
+    public String decrypt(){
 
         for (BigInteger block : encrypted_blocks) {
             // Расшифрование численного предсставления
@@ -167,7 +167,7 @@ public class RSA {
         }
         result.reverse().setLength(64);
         result.reverse();
-        System.out.println(result);
+        return result.toString();
     }
 
 }

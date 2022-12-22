@@ -8,7 +8,7 @@ public class Main {
     RSA rsa = new RSA();
     String key = random64bool("src/key.txt");
     rsa.encrypt(key);
-    rsa.decrypt();
+    System.out.println(rsa.decrypt());
 
 //        DES des = new DES();
 //        String inputString, encryptedString, decryptedString, key;
