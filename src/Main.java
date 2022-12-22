@@ -5,15 +5,13 @@ import static Utilities.Utility.*;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-    RSA rsa1 = new RSA();
+    RSA rsa = new RSA();
+    rsa.encrypt(random64bool("src/key.txt"));
 
-
-    rsa1.encrypt("0001111010011110000001011011011001001110011001000111001110011011");
-
-        DES des = new DES();
-        String inputString, encryptedString, decryptedString, key;
-        random64bool("src/key.txt");
-        long time;
+//        DES des = new DES();
+//        String inputString, encryptedString, decryptedString, key;
+//
+//        long time;
 //
 //
 //        BufferedReader readerInput = new BufferedReader(new FileReader("src/input.txt"));

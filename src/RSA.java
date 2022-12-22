@@ -115,22 +115,13 @@ public class RSA {
         BigInteger d = key_pairs.get(1)[0];
         // Длина блока текста
         int block_length = log2(n);
-        System.out.println("Block length: " + block_length);
+
         // Получаем массив блоков
         String[] blocks = splitStringIntoBlocks(message, block_length);
         ArrayList<BigInteger> initBlocks = new ArrayList<>();
         for (String block : blocks) initBlocks.add(binaryStringToBigInt(block));
 
 
-        // Введённая бинарная строка
-        System.out.println("Input binary:\n" + message);
-
-
-        System.out.println();
-        System.out.println("Init blocks:");
-        System.out.println(initBlocks);
-
-        System.out.println();
         for (String block : blocks) {
             // Численное представление блока
             BigInteger p = binaryStringToBigInt(block);
@@ -138,8 +129,15 @@ public class RSA {
             BigInteger c = bigIntPow(p, e).mod(n);
             encrypted_blocks.add(c);
         }
-        System.out.println("Encrypted blocks:");
-        System.out.println(encrypted_blocks);
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/key_encrypted_with_rsa.txt"));
+            writer.write(encrypted_blocks.toString());
+            writer.close();
+
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
         System.out.println();
         for (BigInteger block : encrypted_blocks) {
@@ -160,10 +158,6 @@ public class RSA {
         }
         result.reverse().setLength(64);
         result.reverse();
-
-        System.out.println();
-        System.out.println(message);
-        System.out.println(result);
     }
 
 

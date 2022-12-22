@@ -156,7 +156,7 @@ public class Utility {
         return res.toString();
     }
 
-    public static void random64bool(String fileName){
+    public static String random64bool(String fileName){
         boolean[] b = new boolean[64];
         Random r = new Random();
 
@@ -172,6 +172,8 @@ public class Utility {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return boolArrToString(b);
     }
 
     public static BigInteger binaryStringToBigInt(String s){
