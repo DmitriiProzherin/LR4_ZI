@@ -5,13 +5,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import static Utilities.Utility.*;
 
 public class RSA {
 
-    private final static long MINIMUM_PRIME_RANGE = (long) 1e8;
-    private final static long MAXIMUM_PRIME_RANGE = (long) 1e9;
+    private final static long MINIMUM_PRIME_RANGE = (long) 1e9;
+    private final static long MAXIMUM_PRIME_RANGE = (long) 1e10;
 
-    private long max_block_length;
 
     private long generateRandomPrimeNumber(){
         Random r = new Random();
@@ -31,16 +31,19 @@ public class RSA {
     }
 
     public ArrayList<BigInteger[]> generateKeys(){
-        ArrayList<BigInteger[]> key_pairs= new ArrayList<>();
+        ArrayList<BigInteger[]> key_pairs = new ArrayList<>();
 
-        long p = generateRandomPrimeNumber();
-        long q = generateRandomPrimeNumber();
+        //long p = generateRandomPrimeNumber();
+        long p = 191;
+        //long q = generateRandomPrimeNumber();
+        long q = 197;
 
 
         BigInteger n = BigInteger.valueOf(p * q);
         BigInteger euler_f_n = BigInteger.valueOf((p - 1) * (q -1));
         BigInteger e = calculate_e(euler_f_n);
         BigInteger d = get_d(e, euler_f_n);
+
 
         key_pairs.add(new BigInteger[] {e, n});
         key_pairs.add(new BigInteger[] {d, n});
@@ -95,6 +98,50 @@ public class RSA {
         while (!isCoprime(res, euler_f_n));
 
         return res;
+    }
+
+    private void setBlockLength(){
+        //int length = log2();
+
+
+    }
+
+    private int log2(BigInteger number){
+      //  if (number.equals(BigInteger.TWO)) return 1;
+
+        int i = 0;
+        while (number.min(BigInteger.TWO).signum() == 1) {
+            number = number.divide(BigInteger.TWO);
+            i++;
+        }
+        return i - 1;
+    }
+
+
+    public void encrypt(String message){
+        ArrayList<BigInteger[]> key_pairs = generateKeys();
+        //int block_length = log2(key_pairs.get(0)[0]);
+        //ArrayList<String> blocks = split(message, block_length);
+        BigInteger e = key_pairs.get(0)[0];
+        BigInteger n = key_pairs.get(0)[1];
+        BigInteger d = key_pairs.get(1)[0];
+
+        // Введённая бинарная строка
+        System.out.println("Input binary: " + message);
+
+        // Численное представление введённой бинарной строки
+        BigInteger p = binaryStringToBigInt(message);
+        System.out.println("Input message: " + p);
+
+        // Шифрование численного представления
+        BigInteger c = bigIntPow(p, e).mod(n);
+        System.out.println("Encrypted message: " + c);
+
+        // Расшифрование численного предсставления
+        BigInteger m = bigIntPow(c, d).mod(n);
+        System.out.println("Decrypted message: " + m);
+
+
     }
 
 

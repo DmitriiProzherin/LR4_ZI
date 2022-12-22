@@ -1,6 +1,7 @@
 package Utilities;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -171,6 +172,37 @@ public class Utility {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static BigInteger binaryStringToBigInt(String s){
+        BigInteger res = BigInteger.ZERO;
+        for (int i = s.length() - 1; i >=0 ; i--) {
+            if (s.charAt(i) == '1') res = res.add(BigInteger.TWO.pow(s.length() - i - 1));
+        }
+        return res;
+    }
+
+    // Returns a^b
+    public static BigInteger bigIntPow(BigInteger a, BigInteger b){
+        BigInteger temp = new BigInteger(a.toByteArray()), i = new BigInteger(b.toByteArray());
+
+        while (!i.equals(BigInteger.ONE)) {
+            temp = temp.multiply(a);
+            i = i.subtract(BigInteger.ONE);
+        }
+
+        return temp;
+    }
+
+    public ArrayList<String> split(String s, int block_length){
+        int blocks_number;
+
+        if (block_length >= s.length()) blocks_number = 1;
+        else blocks_number = s.length() % block_length == 0 ? s.length() / block_length : s.length() / block_length +1;
+
+       // delta =
+
+        return null;
     }
 
 }

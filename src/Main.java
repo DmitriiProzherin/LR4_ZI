@@ -1,11 +1,17 @@
 import java.io.*;
 
+import Utilities.Utility;
+import static Utilities.Utility.*;
+import java.math.BigInteger;
+
 public class Main {
     public static void main(String[] args) throws IOException {
 
     RSA rsa1 = new RSA();
 
-    rsa1.generateKeys();
+  //      System.out.println(binaryStringToBigInt("0001111010011110000001011011011001001110011001000111001110011011"));
+
+    rsa1.encrypt("0001111010011110000001011011011001001110011001000111001110011011");
 
 //        DES des = new DES();
 //        String inputString, encryptedString, decryptedString, key;
