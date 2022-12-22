@@ -9,8 +9,8 @@ import static Utilities.Utility.*;
 
 public class RSA {
 
-    private final static long MINIMUM_PRIME_RANGE = (long) 1e9;
-    private final static long MAXIMUM_PRIME_RANGE = (long) 1e10;
+    private final static long MINIMUM_PRIME_RANGE = (long) 1e0;
+    private final static long MAXIMUM_PRIME_RANGE = (long) 1e2;
 
 
     private long generateRandomPrimeNumber(){
@@ -33,10 +33,8 @@ public class RSA {
     public ArrayList<BigInteger[]> generateKeys(){
         ArrayList<BigInteger[]> key_pairs = new ArrayList<>();
 
-        //long p = generateRandomPrimeNumber();
-        long p = 191;
-        //long q = generateRandomPrimeNumber();
-        long q = 197;
+        long p = generateRandomPrimeNumber();
+        long q = generateRandomPrimeNumber();
 
 
         BigInteger n = BigInteger.valueOf(p * q);
@@ -129,17 +127,30 @@ public class RSA {
         // Введённая бинарная строка
         System.out.println("Input binary: " + message);
 
-        // Численное представление введённой бинарной строки
-        BigInteger p = binaryStringToBigInt(message);
-        System.out.println("Input message: " + p);
+        // Длина блока текста
+        int block_length = (log2(n) + 1);
+        System.out.println("Length of a block: " + block_length);
 
-        // Шифрование численного представления
-        BigInteger c = bigIntPow(p, e).mod(n);
-        System.out.println("Encrypted message: " + c);
+        String[] blocks = splitStringIntoBlocks(message, block_length);
 
-        // Расшифрование численного предсставления
-        BigInteger m = bigIntPow(c, d).mod(n);
-        System.out.println("Decrypted message: " + m);
+        for (String block : blocks) {
+            System.out.println("\nNEW BLOCK");
+            // Юинарное представление блока
+            System.out.println("Block binary: " + block);
+            // Численное представление блока
+            BigInteger p = binaryStringToBigInt(block);
+            System.out.println("Input message: " + p);
+
+            // Шифрование численного представления
+            BigInteger c = bigIntPow(p, e).mod(n);
+            System.out.println("Encrypted message: " + c);
+
+            // Расшифрование численного предсставления
+            BigInteger m = bigIntPow(c, d).mod(n);
+            System.out.println("Decrypted message: " + m);
+        }
+
+
 
 
     }

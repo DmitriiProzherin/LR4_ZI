@@ -194,15 +194,17 @@ public class Utility {
         return temp;
     }
 
-    public ArrayList<String> split(String s, int block_length){
-        int blocks_number;
+    public static String[] splitStringIntoBlocks(String s, int block_length){
+        int block_numbers = s.length() % block_length == 0 ? s.length() / block_length : s.length() / block_length + 1;
 
-        if (block_length >= s.length()) blocks_number = 1;
-        else blocks_number = s.length() % block_length == 0 ? s.length() / block_length : s.length() / block_length +1;
+        int delta = block_length * block_numbers - s.length();
+        char[] chars = new char[delta];
+        Arrays.fill(chars, '0');
+        String prefix = new String(chars);
+        s = prefix + s;
 
-       // delta =
 
-        return null;
+        return s.split("(?<=\\G.{"+block_length+"})");
     }
 
 }
